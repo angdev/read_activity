@@ -11,6 +11,11 @@ module ReadActivity
           mark.save!
         end
       end
+
+      def read_by?(reader)
+        mark = read_activity_marks.where(reader: reader)
+        mark.exists?
+      end
     end
   end
 end

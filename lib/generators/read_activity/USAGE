@@ -1,0 +1,8 @@
+Description:
+    Create a ReadActivityMark Migration file.
+
+Example:
+    rails generate read_activity
+
+    This will create:
+        db/migrate/create_read_activity_marks.rb

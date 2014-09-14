@@ -5,8 +5,10 @@ require "factory_girl"
 require "read_activity"
 
 ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
-load File.dirname(__FILE__) + "/schema.rb"
-require File.dirname(__FILE__) + "/models.rb"
+require_relative "schema.rb"
+require_relative "models.rb"
+require "generators/read_activity/templates/create_read_activity_marks"
+CreateReadActivityMarks.migrate(:up)
 
 FactoryGirl.find_definitions
 

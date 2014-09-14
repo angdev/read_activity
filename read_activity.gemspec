@@ -24,4 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "guard-rspec", "~> 4.3"
   spec.add_development_dependency "sqlite3", "~> 1.3"
   spec.add_development_dependency "activerecord", "~> 4.1"
+  spec.add_development_dependency "factory_girl", "~> 4.4"
+  spec.add_development_dependency "database_cleaner", "~> 1.3"
 end

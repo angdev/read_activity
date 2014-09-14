@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ang0123dev@gmail.com"]
   spec.summary       = %q{Manages read activities.}
   spec.description   = %q{This gem supports to get read/unread status (including read_at), read/unread users for a specific readable, etc.}
-  spec.homepage      = "http://rubygems.org/gems/read_activity"
+  spec.homepage      = "https://github.com/FeGs/read_activity"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

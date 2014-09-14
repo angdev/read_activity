@@ -24,4 +24,13 @@ RSpec.describe ReadActivity::Reader do
       expect(user.read_as_mark?(article)).to eq(true)
     end
   end
+
+  describe "#read_articles" do
+    it "should return readables read by reader" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      expect(user.read_readables(Article).empty?).to eq(true)
+    end
+  end
 end

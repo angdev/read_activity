@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "activerecord", "~> 4.1"
   spec.add_development_dependency "factory_girl", "~> 4.4"
   spec.add_development_dependency "database_cleaner", "~> 1.3"
+  spec.add_development_dependency "simplecov", "~> 0.9"
 end

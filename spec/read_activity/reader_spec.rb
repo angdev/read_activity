@@ -81,6 +81,12 @@ RSpec.describe ReadActivity::Reader do
       expect(user.read_articles.empty?).to eq(true)
       expect { user.read_posts }.to raise_error
     end
+
+    it "should respond to method" do
+      user = FactoryGirl.create(:user)
+      expect(user.respond_to?(:read_articles)).to eq(true)
+      expect { user.method(:read_articles) }.not_to raise_error
+    end
   end
 
   describe "#readables_unmarked_as_read" do
@@ -112,6 +118,13 @@ RSpec.describe ReadActivity::Reader do
       expect(user.unread_articles.empty?).to eq(false)
       expect { user.unread_posts }.to raise_error
     end
+
+    it "should respond to method" do
+      user = FactoryGirl.create(:user)
+      expect(user.respond_to?(:unread_articles)).to eq(true)
+      expect { user.method(:unread_articles) }.not_to raise_error
+    end
+
   end
 
   describe "#read_at" do

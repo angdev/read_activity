@@ -1,3 +1,6 @@
+require "simplecov"
+SimpleCov.start
+
 require "active_record"
 require "database_cleaner"
 require "factory_girl"

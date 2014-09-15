@@ -1,6 +1,34 @@
 require "spec_helper"
 
 RSpec.describe ReadActivity::Reader do
+  describe ".find_who_read" do
+    it "should find users who read a readable" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      read_users = User.find_who_read(article)
+      expect(read_users.empty?).to eq(true)
+
+      user.read!(article)
+      read_users = User.find_who_read(article)
+      expect(read_users.include?(user)).to eq(true)
+    end
+  end
+
+  describe ".find_who_unread" do
+    it "should find users who unread a readable" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      unread_users = User.find_who_unread(article)
+      expect(unread_users.include?(user)).to eq(true)
+
+      user.read!(article)
+      unread_users = User.find_who_unread(article)
+      expect(unread_users.empty?).to eq(true)
+    end
+  end
+
   describe "#read!" do
     it "should create a ReadActivityMark for an unread user" do
       user = FactoryGirl.create(:user)
@@ -52,6 +80,28 @@ RSpec.describe ReadActivity::Reader do
       user = FactoryGirl.create(:user)
       expect(user.read_articles.empty?).to eq(true)
       expect { user.read_posts }.to raise_error
+    end
+  end
+
+  describe "#readables_unmarked_as_read" do
+    it "should return readables unread by reader" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      expect(user.readables_unmarked_as_read(Article).include?(article)).to eq(true)
+
+      user.read!(article)
+      expect(user.readables_unmarked_as_read(Article).empty?).to eq(true)
+    end
+  end
+
+  describe "#unread_(.*)" do
+    it "should be call correctly for readables" do
+
+    end
+
+    it "should fail for unknown readables" do
+
     end
   end
 end

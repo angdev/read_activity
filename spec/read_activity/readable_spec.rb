@@ -15,6 +15,20 @@ RSpec.describe ReadActivity::Readable do
     end
   end
 
+  describe ".find_unread_by" do
+    it "find all readables unread by user" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      unread_articles = Article.find_unread_by(user)
+      expect(unread_articles.include?(article)).to eq(true)
+
+      article.read_by!(user)
+      unread_articles = Article.find_unread_by(user)
+      expect(unread_articles.empty?).to eq(true)
+    end
+  end
+
   describe "#read_by!" do
     it "should create a ReadActivityMark for an unread user" do
       user = FactoryGirl.create(:user)
@@ -48,6 +62,18 @@ RSpec.describe ReadActivity::Readable do
 
       article.read_by!(user)
       expect(article.readers.include?(user)).to eq(true)
+    end
+  end
+
+  describe "#unreaders" do
+    it "should return relative complement of readers in all readers" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      expect(article.unreaders.include?(user)).to eq(true)
+
+      article.read_by!(user)
+      expect(article.unreaders.empty?).to eq(true)
     end
   end
 end

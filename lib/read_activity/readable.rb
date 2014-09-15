@@ -1,9 +1,9 @@
 module ReadActivity
   module Readable
-    @klasses = []
     class << self
       attr_accessor :klasses
       def register_klass(klass)
+        @klasses ||= []
         @klasses << klass
       end
     end

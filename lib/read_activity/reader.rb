@@ -41,15 +41,22 @@ module ReadActivity
       end
 
       def method_missing(method, *arguments, &block)
-        if method.to_s =~ /read_(.*)/
+        if method.to_s =~ /^read_(.*)/
           readables_marked_as_read($1.singularize.camelize.constantize, *arguments, &block)
+        elsif method.to_s =~ /^unread_(.*)/
+          readables_unmarked_as_read($1.singularize.camelize.constantize, *arguments, &block)
         else
           super
         end
       end
 
       def respond_to_missing?(method, include_private = false)
-        method.to_s.start_with?("read_") || super
+        method_name = method.to_s
+        if method_name.start_with?("read_") or method_name.start_with?("unread_")
+          true
+        else
+          super
+        end
       end
     end
   end

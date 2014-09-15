@@ -97,11 +97,20 @@ RSpec.describe ReadActivity::Reader do
 
   describe "#unread_(.*)" do
     it "should be call correctly for readables" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
 
+      expect(user.unread_articles.include?(article)).to eq(true)
+
+      user.read!(article)
+      expect(user.unread_articles.empty?).to eq(true)
     end
 
     it "should fail for unknown readables" do
-
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+      expect(user.unread_articles.empty?).to eq(false)
+      expect { user.unread_posts }.to raise_error
     end
   end
 end

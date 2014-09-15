@@ -35,6 +35,12 @@ module ReadActivity
         mark.exists?
       end
 
+      def read_by_at(reader)
+        mark = ReadActivityMark.find_by(readable: self, reader: reader)
+        return mark.created_at if mark
+        return nil
+      end
+
       def readers
         Reader.klass.send(:find_who_read, self)
       end

@@ -76,4 +76,16 @@ RSpec.describe ReadActivity::Readable do
       expect(article.unreaders.empty?).to eq(true)
     end
   end
+
+  describe "#read_by_at" do
+    it "should return when user read readables" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      expect(article.read_by_at(user)).to eq(nil)
+      article.read_by!(user)
+
+      expect(article.read_by_at(user)).to eq(user.read_activity_marks.take.created_at)
+    end
+  end
 end

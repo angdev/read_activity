@@ -113,4 +113,16 @@ RSpec.describe ReadActivity::Reader do
       expect { user.unread_posts }.to raise_error
     end
   end
+
+  describe "#read_at" do
+    it "should return when user read readables" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      expect(user.read_at(article)).to eq(nil)
+      user.read!(article)
+
+      expect(user.read_at(article)).to eq(user.read_activity_marks.take.created_at)
+    end
+  end
 end

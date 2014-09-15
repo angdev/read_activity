@@ -40,6 +40,11 @@ module ReadActivity
         klass.send(:find_unread_by, self)
       end
 
+      # inverse of Readable#read_by_at
+      def read_at(readable)
+        readable.read_by_at(self)
+      end
+
       def method_missing(method, *arguments, &block)
         if method.to_s =~ /^read_(.*)/
           readables_marked_as_read($1.singularize.camelize.constantize, *arguments, &block)

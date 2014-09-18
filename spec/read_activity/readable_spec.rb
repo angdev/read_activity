@@ -39,6 +39,15 @@ RSpec.describe ReadActivity::Readable do
       expect(mark.reader).to eq(user)
       expect(mark.readable).to eq(article)
     end
+    
+    it "should create only ReadActivityMark for specific readable" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+      article.read_by!(user)
+      article.read_by!(user)
+
+      expect(article.read_activity_marks.count).to eq(1)
+    end
   end
 
   describe "#read_by?" do

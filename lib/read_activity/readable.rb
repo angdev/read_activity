@@ -25,7 +25,7 @@ module ReadActivity
     module InstanceMethods
       def read_by!(reader)
         ReadActivityMark.transaction do
-          mark = self.read_activity_marks.build(reader: reader)
+          mark = self.read_activity_marks.where(reader: reader).first_or_initialize
           mark.save!
         end
       end

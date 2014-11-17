@@ -4,6 +4,7 @@ SimpleCov.start
 require "active_record"
 require "database_cleaner"
 require "factory_girl"
+Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
 require "read_activity"
 

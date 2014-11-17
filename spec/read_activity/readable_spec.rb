@@ -39,7 +39,7 @@ RSpec.describe ReadActivity::Readable do
       expect(mark.reader).to eq(user)
       expect(mark.readable).to eq(article)
     end
-    
+
     it "should create only ReadActivityMark for specific readable" do
       user = FactoryGirl.create(:user)
       article = FactoryGirl.create(:article)
@@ -87,7 +87,7 @@ RSpec.describe ReadActivity::Readable do
   end
 
   describe "#read_by_at" do
-    it "should return when user read readables" do
+    it "should return when users read readables" do
       user = FactoryGirl.create(:user)
       article = FactoryGirl.create(:article)
 
@@ -95,6 +95,16 @@ RSpec.describe ReadActivity::Readable do
       article.read_by!(user)
 
       expect(article.read_by_at(user)).to eq(user.read_activity_marks.take.created_at)
+    end
+
+    it "should return when readers read readables" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      article.read_by!(user)
+
+      articles = user.read_articles
+      expect(articles.first.read_by_at).to eq(user.read_activity_marks.take.created_at)
     end
   end
 end

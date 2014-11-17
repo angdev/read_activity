@@ -10,7 +10,7 @@ module ReadActivity
 
     module ClassMethods
       def find_read_by(reader)
-        self.joins(:read_activity_marks).merge(ReadActivityMark.where(reader: reader))
+        self.includes(:read_activity_marks).merge(ReadActivityMark.where(reader: reader)).references(:read_activity_marks)
       end
 
       def find_unread_by(reader)
@@ -31,14 +31,25 @@ module ReadActivity
       end
 
       def read_by?(reader)
-        mark = self.read_activity_marks.where(reader: reader)
-        mark.exists?
+        mark = self.read_activity_marks.exists?(reader: reader)
       end
 
-      def read_by_at(reader)
-        mark = ReadActivityMark.find_by(readable: self, reader: reader)
-        return mark.created_at if mark
-        return nil
+      def read_by_at(reader = nil)
+        read_by_at = nil
+
+        if self.read_activity_marks.loaded?
+          read_by_at = self.read_activity_marks.first.try(:created_at)
+        end
+
+        if read_by_at.nil? && reader
+          if reader.read_activity_marks.loaded?
+            read_by_at = reader.read_activity_marks.first.try(:created_at)
+          else
+            read_by_at = self.read_activity_marks.where(reader: reader).first.try(:created_at)
+          end
+        end
+
+        return read_by_at
       end
 
       def readers

@@ -132,10 +132,28 @@ RSpec.describe ReadActivity::Reader do
       user = FactoryGirl.create(:user)
       article = FactoryGirl.create(:article)
 
-      expect(user.read_at(article)).to eq(nil)
       user.read!(article)
 
       expect(user.read_at(article)).to eq(user.read_activity_marks.take.created_at)
+    end
+
+    it "should return when readers read readables" do
+      user = FactoryGirl.create(:user)
+      article = FactoryGirl.create(:article)
+
+      user.read!(article)
+
+      readers = article.readers
+      expect(readers.first.read_at).to eq(user.read_activity_marks.take.created_at)
+    end
+
+    it "should be optimized" do
+      users = FactoryGirl.create_list(:user, 3)
+      article = FactoryGirl.create(:article)
+
+      users.each { |user| user.read!(article) }
+
+      expect { article.readers.each{ |user| user.read_at } }.to under_query_limit(1)
     end
   end
 end

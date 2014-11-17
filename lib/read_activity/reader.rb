@@ -9,7 +9,7 @@ module ReadActivity
 
     module ClassMethods
       def find_who_read(readable)
-        self.joins(:read_activity_marks).merge(ReadActivityMark.where(readable: readable))
+        self.includes(:read_activity_marks).merge(ReadActivityMark.where(readable: readable)).references(:read_activity_marks)
       end
 
       def find_who_unread(readable)
@@ -40,9 +40,22 @@ module ReadActivity
         klass.send(:find_unread_by, self)
       end
 
-      # inverse of Readable#read_by_at
-      def read_at(readable)
-        readable.read_by_at(self)
+      def read_at(readable = nil)
+        read_at = nil
+
+        if self.read_activity_marks.loaded?
+          read_at = self.read_activity_marks.first.try(:created_at)
+        end
+
+        if read_at.nil? && readable
+          if readable.read_activity_marks.loaded?
+            read_at = readable.read_activity_marks.first.try(:created_at)
+          else
+            read_at = self.read_activity_marks.where(readable: readable).first.try(:created_at)
+          end
+        end
+
+        return read_at
       end
 
       def method_missing(method, *arguments, &block)

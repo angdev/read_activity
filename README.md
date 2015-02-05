@@ -20,6 +20,10 @@ Or install it yourself as:
 
     $ gem install read_activity
 
+Execute to generate a migration for creating `ReadActivity` model:
+
+    rails generate read_activity
+
 ## Usage example
 
 ```ruby

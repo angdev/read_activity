@@ -1,4 +1,4 @@
-# ReadActivity
+# ReadActivity [![Build Status](https://travis-ci.org/FeGs/read_activity.svg)](https://travis-ci.org/FeGs/read_activity)
 
 Manages read activities.
 
